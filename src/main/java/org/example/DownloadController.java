@@ -42,7 +42,6 @@ public class DownloadController {
     }
 
     public void updateUI(FileInfo metaFileInfo) {
-        System.out.println(metaFileInfo);
         FileInfo fileInfo = this.fileInfoTable.getItems().get(metaFileInfo.getIndex() - 1);
         fileInfo.setStatus(fileInfo.getStatus());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -52,6 +51,7 @@ public class DownloadController {
 
     @FXML
     public void initialize(){
+        addButtonToTable();
         TableColumn<FileInfo, Number> sn = (TableColumn<FileInfo, Number>) fileInfoTable.getColumns().get(0);
         sn.setCellValueFactory(p->{
             return p.getValue().indexProperty();
@@ -77,7 +77,7 @@ public class DownloadController {
 
     }
 
-    /*private void addButtonToTable() {
+    private void addButtonToTable() {
         TableColumn<FileInfo, Void> colBtn = new TableColumn("Action");
 
         Callback<TableColumn<FileInfo, Void>, TableCell<FileInfo, Void>> cellFactory = new Callback<TableColumn<FileInfo, Void>, TableCell<FileInfo, Void>>() {
@@ -85,11 +85,23 @@ public class DownloadController {
             public TableCell<FileInfo, Void> call(final TableColumn<FileInfo, Void> param) {
                 final TableCell<FileInfo, Void> cell = new TableCell<FileInfo, Void>() {
 
-                    private final Button btn = new Button("Open");
+                    private final Button btn = new Button("Delete");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
-                            File file = new File(AppConfig.DOWNLOAD_PATH);
+                            FileInfo fileInfo = fileInfoTable.getItems().get(index-1);
+                            System.out.println(fileInfo);
+                            File file
+                                    = new File(AppConfig.DOWNLOAD_PATH+"/"+fileInfo.getFileName());
+
+                            if (file.delete()) {
+                                System.out.println("File deleted successfully");
+                                index--;
+                                fileInfoTable.getItems().remove(fileInfo);
+                            }
+                            else {
+                                System.out.println("Failed to delete the file");
+                            }
 
                         });
                     }
@@ -112,5 +124,5 @@ public class DownloadController {
 
         fileInfoTable.getColumns().add(colBtn);
 
-    }*/
+    }
 }

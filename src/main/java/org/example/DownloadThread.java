@@ -48,7 +48,6 @@ public class DownloadThread extends Thread{
                 countSize = countSize+count;
                 if(fileSize>0) {
                     percentage = (countSize / fileSize * 100);
-                    System.out.println(percentage);
                     fileInfo.setPercentage(String.valueOf(percentage));
                     this.downloadController.updateUI(fileInfo);
                 }
